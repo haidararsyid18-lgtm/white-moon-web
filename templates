@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHITE_MOON v{{ versi }}</title>
+    <style>
+        body { background: #0a0a0a; color: #00ff88; font-family: 'Courier New'; padding: 20px; text-align: center; }
+        .container { max-width: 700px; margin: auto; border: 1px solid #00ff88; padding: 20px; border-radius: 10px; }
+        input, button { width: 90%; padding: 10px; margin-top: 10px; background: #111; color: #00ff88; border: 1px solid #00ff88; border-radius: 5px; }
+        button { cursor: pointer; } button:hover { background: #00ff88; color: #000; }
+        #hasil { margin-top: 20px; padding: 15px; background: #111; border-radius: 5px; text-align: left; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 WHITE_MOON v{{ versi }}</h1>
+        <p>AI Tim dengan Sistem Debat + Memori</p>
+        <input type="text" id="topik" placeholder="Masukkan topik untuk didebatkan...">
+        <button onclick="debat()">Mulai Debat</button>
+        <button onclick="analisis()">Analisis Kode</button>
+        <button onclick="lihatMemori()">Lihat Memori</button>
+        <div id="hasil">Hasil akan muncul di sini...</div>
+    </div>
+<script>
+    async function debat() {
+        let topik = document.getElementById('topik').value;
+        let res = await fetch('/api/debat', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({topik})});
+        let data = await res.json();
+        document.getElementById('hasil').innerText = JSON.stringify(data, null, 2);
+    }
+    async function analisis() { let res = await fetch('/api/analisis'); document.getElementById('hasil').innerText = JSON.stringify(await res.json(), null, 2); }
+    async function lihatMemori() { let res = await fetch('/api/ingat'); document.getElementById('hasil').innerText = JSON.stringify(await res.json(), null, 2); }
+</script>
+</body>
+</html>
